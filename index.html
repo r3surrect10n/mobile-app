@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0f172a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="description" content="Адаптивное мобильное веб-приложение">
+  <title>Мобильное приложение</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <!-- Верхняя панель (App Header) -->
+    <header class="app-header">
+      <div class="header-content">
+        <div class="brand">
+          <span class="brand-badge" aria-hidden="true">📱</span>
+          <h1 class="app-title">Web App</h1>
+        </div>
+        <div class="device-indicator" id="deviceIndicator" title="Определённое устройство">
+          <span class="indicator-dot" aria-hidden="true"></span>
+          <span class="indicator-text" id="deviceText">Определение...</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Основной контент приложения -->
+    <main class="app-main">
+      <div class="content-container">
+        <!-- Информационная карточка состояния -->
+        <section class="card status-card" aria-labelledby="status-heading">
+          <h2 id="status-heading" class="card-title">Состояние системы</h2>
+          <p class="status-summary" id="lastActionText">Нажмите любую кнопку ниже для взаимодействия.</p>
+          <div class="stats-row">
+            <div class="stat-item">
+              <span class="stat-label">Кликов</span>
+              <span class="stat-value" id="clickCount">0</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Экран</span>
+              <span class="stat-value" id="screenResolution">-</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Секция основных кнопок -->
+        <section class="card actions-section" aria-labelledby="actions-heading">
+          <h2 id="actions-heading" class="card-title">Панель действий</h2>
+          <p class="section-description">Кнопки автоматически подстраиваются под мобильный экран и экран ПК, увеличивая область нажатия для сенсорного ввода.</p>
+          
+          <div class="button-grid">
+            <button type="button" class="btn btn-primary" id="btnPrimary">
+              <span class="btn-icon" aria-hidden="true">⚡</span>
+              <span class="btn-label">Главное действие</span>
+            </button>
+
+            <button type="button" class="btn btn-secondary" id="btnCounter">
+              <span class="btn-icon" aria-hidden="true">🔢</span>
+              <span class="btn-label">Счётчик: <strong id="counterBadge">0</strong></span>
+            </button>
+
+            <button type="button" class="btn btn-secondary" id="btnToggle" aria-pressed="false">
+              <span class="btn-icon" aria-hidden="true">🔔</span>
+              <span class="btn-label">Уведомления: <strong id="toggleBadge">Выкл</strong></span>
+            </button>
+
+            <button type="button" class="btn btn-accent" id="btnDialog">
+              <span class="btn-icon" aria-hidden="true">💬</span>
+              <span class="btn-label">Диалог</span>
+            </button>
+          </div>
+        </section>
+
+        <!-- Дополнительные быстрые действия -->
+        <section class="card quick-actions-section" aria-labelledby="quick-heading">
+          <h2 id="quick-heading" class="card-title">Быстрые переключатели</h2>
+          <div class="chips-container" role="toolbar" aria-label="Быстрые действия">
+            <button type="button" class="chip" data-action="Утренний режим">🌅 Утро</button>
+            <button type="button" class="chip" data-action="Рабочий режим">💼 Работа</button>
+            <button type="button" class="chip" data-action="Режим отдыха">☕ Отдых</button>
+            <button type="button" class="chip" data-action="Ночной режим">🌙 Ночь</button>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <!-- Нижняя мобильная панель навигации -->
+    <nav class="bottom-nav" aria-label="Основная навигация">
+      <button type="button" class="nav-item active" data-tab="Главная">
+        <span class="nav-icon" aria-hidden="true">🏠</span>
+        <span class="nav-label">Главная</span>
+      </button>
+      <button type="button" class="nav-item" data-tab="Действия">
+        <span class="nav-icon" aria-hidden="true">⚡</span>
+        <span class="nav-label">Действия</span>
+      </button>
+      <button type="button" class="nav-item" data-tab="История">
+        <span class="nav-icon" aria-hidden="true">📋</span>
+        <span class="nav-label">История</span>
+      </button>
+      <button type="button" class="nav-item" data-tab="Настройки">
+        <span class="nav-icon" aria-hidden="true">⚙️</span>
+        <span class="nav-label">Настройки</span>
+      </button>
+    </nav>
+  </div>
+
+  <!-- Всплывающий диалог (нативный HTML Dialog) -->
+  <dialog id="messageDialog" class="app-dialog">
+    <div class="dialog-content">
+      <h3 class="dialog-title">Уведомление</h3>
+      <p class="dialog-body" id="dialogMessage">Это модальное окно, адаптированное под экраны мобильных устройств и десктопов.</p>
+      <div class="dialog-actions">
+        <button type="button" class="btn btn-primary" id="btnDialogClose">Понятно</button>
+      </div>
+    </div>
+  </dialog>
+
+  <script src="app.js"></script>
+</body>
+</html>

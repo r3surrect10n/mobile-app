@@ -1,0 +1,492 @@
+/* -------------------------------------------------------------
+   Переменные и базовые настройки дизайна
+   ------------------------------------------------------------- */
+:root {
+  /* Минимальный размер интерактивных элементов для мыши/ПК (WCAG 2.5.8) */
+  --target-size: 36px;
+
+  /* Цветовая палитра - современная мобильная темная тема */
+  --bg-app: #0b0f19;
+  --bg-card: #151d2e;
+  --bg-card-hover: #1c263c;
+  --border-color: rgba(255, 255, 255, 0.08);
+  --border-subtle: rgba(255, 255, 255, 0.04);
+
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+
+  --accent-primary: #3b82f6;
+  --accent-primary-hover: #2563eb;
+  --accent-success: #10b981;
+  --accent-purple: #8b5cf6;
+
+  /* Скругления и тени */
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.25);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.35);
+
+  /* Шрифты и переходы */
+  --font-system: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --transition-fast: 0.15s ease;
+}
+
+/* На сенсорных устройствах увеличиваем таргеты нажатия до 44px (WCAG 2.5.5) */
+@media (pointer: coarse) {
+  :root {
+    --target-size: 48px;
+  }
+}
+
+/* -------------------------------------------------------------
+   Сброс и системные стили
+   ------------------------------------------------------------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  font-family: var(--font-system);
+  background-color: var(--bg-app);
+  color: var(--text-primary);
+  /* Предотвращаем перекрытие фокуса фиксированной нижней панелью */
+  scroll-padding-bottom: calc(4.5rem + env(safe-area-inset-bottom, 0px));
+  /* Блокируем нежелательный горизонтальный скролл страницы */
+  overflow-x: hidden;
+}
+
+body {
+  min-height: 100dvh;
+  display: flex;
+  justify-content: center;
+  background-color: var(--bg-app);
+  overflow-wrap: break-word;
+  user-select: none; /* Ощущение нативного мобильного приложения */
+  -webkit-user-select: none;
+}
+
+/* Типографика с балансировкой переносов (modern-web-guidance) */
+h1, h2, h3 {
+  text-wrap: balance;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+p, li {
+  text-wrap: pretty;
+  line-height: 1.5;
+}
+
+/* -------------------------------------------------------------
+   Каркас приложения (App Shell)
+   ------------------------------------------------------------- */
+.app-shell {
+  width: 100%;
+  max-width: 580px; /* На ПК отображается как аккуратный мобильный экран / виджет */
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  background-color: var(--bg-app);
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+}
+
+/* -------------------------------------------------------------
+   Верхняя панель (App Header)
+   ------------------------------------------------------------- */
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background-color: rgba(11, 15, 25, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border-color);
+  padding-top: max(0.85rem, env(safe-area-inset-top, 0px));
+  padding-bottom: 0.85rem;
+  padding-left: max(1.25rem, env(safe-area-inset-left, 0px));
+  padding-right: max(1.25rem, env(safe-area-inset-right, 0px));
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.brand-badge {
+  font-size: 1.35rem;
+  line-height: 1;
+}
+
+.app-title {
+  font-size: clamp(1.1rem, 1rem + 0.5vw, 1.35rem);
+  letter-spacing: -0.02em;
+}
+
+.device-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.35rem 0.75rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 9999px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.indicator-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--accent-success);
+  box-shadow: 0 0 8px var(--accent-success);
+}
+
+/* -------------------------------------------------------------
+   Основной контент
+   ------------------------------------------------------------- */
+.app-main {
+  flex: 1;
+  padding: 1.25rem;
+  padding-bottom: calc(5.5rem + env(safe-area-inset-bottom, 0px));
+  display: flex;
+  flex-direction: column;
+}
+
+.content-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  container: content / inline-size;
+}
+
+/* Карточки */
+.card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  box-shadow: var(--shadow-sm);
+  transition: border-color var(--transition-fast);
+}
+
+.card:hover {
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.card-title {
+  font-size: 1.05rem;
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+}
+
+.section-description {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-bottom: 1.1rem;
+}
+
+/* Карточка статуса */
+.status-summary {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  background: rgba(0, 0, 0, 0.25);
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-sm);
+  border-left: 3px solid var(--accent-primary);
+  margin-bottom: 1rem;
+}
+
+.stats-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.stat-item {
+  background: rgba(255, 255, 255, 0.03);
+  padding: 0.75rem;
+  border-radius: var(--radius-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+
+.stat-value {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+/* -------------------------------------------------------------
+   Сетка кнопок и стили интерактивных элементов
+   ------------------------------------------------------------- */
+.button-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.85rem;
+}
+
+/* Контейнерный запрос: на экранах шире 420px кнопки выстраиваются в 2 колонки */
+@container content (min-width: 420px) {
+  .button-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Базовая кнопка */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  min-height: var(--target-size);
+  padding: 0.75rem 1.25rem;
+  border-radius: var(--radius-md);
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.1s ease, filter var(--transition-fast), background-color var(--transition-fast);
+  text-align: center;
+}
+
+/* Тактильный отклик при нажатии на телефоне */
+.btn:active {
+  transform: scale(0.96);
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+}
+
+.btn-icon {
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+/* Варианты кнопок */
+.btn-primary {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.35);
+}
+
+.btn-primary:hover {
+  filter: brightness(1.1);
+}
+
+.btn-secondary {
+  background: var(--bg-card-hover);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.btn-secondary[aria-pressed="true"] {
+  border-color: var(--accent-success);
+  background: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+}
+
+.btn-accent {
+  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.35);
+}
+
+.btn-accent:hover {
+  filter: brightness(1.1);
+}
+
+/* Быстрые переключатели (Chips) */
+.chips-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.chip {
+  min-height: var(--target-size);
+  padding: 0.4rem 0.95rem;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.chip:active {
+  transform: scale(0.94);
+}
+
+.chip:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+}
+
+.chip.active {
+  background: rgba(59, 130, 246, 0.2);
+  border-color: var(--accent-primary);
+  color: #93c5fd;
+}
+
+/* -------------------------------------------------------------
+   Нижняя мобильная панель навигации (Bottom Navigation)
+   ------------------------------------------------------------- */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  max-width: 580px;
+  margin: 0 auto;
+  z-index: 50;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: rgba(15, 23, 42, 0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-top: 1px solid var(--border-color);
+  padding-top: 0.5rem;
+  padding-bottom: max(0.5rem, env(safe-area-inset-bottom, 0px));
+}
+
+.nav-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  min-height: var(--target-size);
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.72rem;
+  font-weight: 500;
+  transition: color var(--transition-fast);
+}
+
+.nav-item:active {
+  transform: scale(0.92);
+}
+
+.nav-icon {
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.nav-item.active {
+  color: var(--accent-primary);
+}
+
+.nav-item.active .nav-icon {
+  filter: drop-shadow(0 2px 6px rgba(59, 130, 246, 0.5));
+}
+
+/* -------------------------------------------------------------
+   Нативный диалог (HTML <dialog>)
+   ------------------------------------------------------------- */
+.app-dialog {
+  border: none;
+  background: transparent;
+  padding: 1.25rem;
+  max-width: 440px;
+  width: 90%;
+  margin: auto;
+}
+
+.app-dialog::backdrop {
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(6px);
+}
+
+.dialog-content {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-md);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.dialog-title {
+  font-size: 1.2rem;
+  color: var(--text-primary);
+}
+
+.dialog-body {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 0.5rem;
+}
+
+/* -------------------------------------------------------------
+   Адаптивность для ПК / больших экранов
+   ------------------------------------------------------------- */
+@media (min-width: 768px) {
+  body {
+    padding: 2rem 1rem;
+    align-items: center;
+    background: radial-gradient(circle at 50% 10%, #1e293b 0%, #0b0f19 100%);
+  }
+
+  .app-shell {
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-color);
+    min-height: auto;
+    height: 90dvh;
+    max-height: 860px;
+    overflow: hidden;
+  }
+
+  .app-main {
+    overflow-y: auto;
+  }
+
+  .bottom-nav {
+    position: absolute;
+    border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+  }
+}
