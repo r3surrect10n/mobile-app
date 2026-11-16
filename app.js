@@ -132,4 +132,15 @@ document.addEventListener('DOMContentLoaded', () => {
       recordAction(`Переход на вкладку: "${tabName}"`);
     });
   });
+
+  // -------------------------------------------------------------
+  // Защита от случайного зума при быстрых и частых нажатиях
+  // -------------------------------------------------------------
+  document.addEventListener('dblclick', (event) => {
+    event.preventDefault();
+  }, { passive: false });
+
+  document.addEventListener('gesturestart', (event) => {
+    event.preventDefault();
+  });
 });
