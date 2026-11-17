@@ -3,11 +3,18 @@
 // -------------------------------------------------------------
 document.addEventListener('DOMContentLoaded', () => {
   // Элементы UI
+  const appVersionEl = document.getElementById('appVersion');
   const deviceIndicator = document.getElementById('deviceIndicator');
   const deviceText = document.getElementById('deviceText');
   const screenResolution = document.getElementById('screenResolution');
   const clickCountEl = document.getElementById('clickCount');
   const lastActionText = document.getElementById('lastActionText');
+
+  // Версия приложения
+  const APP_VERSION = 'v0.0.2';
+  if (appVersionEl) {
+    appVersionEl.textContent = APP_VERSION;
+  }
 
   // Кнопки действий
   const btnPrimary = document.getElementById('btnPrimary');
@@ -132,6 +139,13 @@ document.addEventListener('DOMContentLoaded', () => {
       recordAction(`Переход на вкладку: "${tabName}"`);
     });
   });
+
+  // Клик по версии для быстрой проверки
+  if (appVersionEl) {
+    appVersionEl.addEventListener('click', () => {
+      recordAction(`ℹ️ Версия приложения: ${APP_VERSION}`);
+    });
+  }
 
   // -------------------------------------------------------------
   // Защита от случайного зума при быстрых и частых нажатиях
